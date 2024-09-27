@@ -3,9 +3,11 @@ import { deleteUser, getUsers } from "../services/userService";
 import { getRoles } from "../services/roleService";
 import { toast } from "react-toastify";
 
-const User = ({ handleshowmodale, showModalUpdate })=> {
+const User = ({ handleshowmodale, showModalUpdate }) => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [roles, setRoles] = useState({});
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -14,15 +16,15 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
         if (response && response.data) {
           console.log(response.data);
           setUsers(response.data);
+          setFilteredUsers(response.data); // Initialize filteredUsers
         } else {
           console.log("No data available in response");
         }
       } catch (error) {
-        console.log("Error fetching roles:", error);
+        console.log("Error fetching users:", error);
       }
     };
 
-    // Fonction pour récupérer les rôles et les stocker dans un objet
     const fetchRoles = async () => {
       try {
         const response = await getRoles();
@@ -43,6 +45,14 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
     fetchRoles();
     fetchUsers();
   }, []);
+
+  useEffect(() => {
+    // Filter users based on the filter state
+    const filtered = users.filter(user =>
+      `${user.nom} ${user.prenom}`.toLowerCase().includes(filter.toLowerCase())
+    );
+    setFilteredUsers(filtered);
+  }, [filter, users]);
 
   const showToast = (title, message, theme = "light", icon = "info") => {
     toast[theme](`${title}: ${message}`, {
@@ -65,6 +75,7 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
         console.log(response.data, "response");
         const filteredUsers = users.filter((user) => user.id !== id);
         setUsers(filteredUsers);
+        setFilteredUsers(filteredUsers); // Update filteredUsers
         showToast("Succès", "User supprimé avec succès", "success");
       } else {
         showToast("Erreur", "Erreur lors de la suppression", "error");
@@ -74,14 +85,15 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
       showToast("Erreur", "Erreur lors de la suppression", "error");
     }
   };
+
   return (
     <>
-      <div className="card  mb-5 border-0 bg-white shadow-none">
+      <div className="card mb-5 border-0 bg-white shadow-none">
         <div className="card-header bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <h5 className="mb-0 text-dark fw-bold">Users</h5>
             <span className="badge bg-blue ms-3 fs-6">
-              {users.length > 0 && users.length}
+              {filteredUsers.length > 0 && filteredUsers.length}
             </span>
           </div>
           <div className="card-action">
@@ -110,6 +122,19 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
             </div>
           </div>
         </div>
+        
+        {/* Filter Input */}
+        <div className="card-body">
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Rechercher par nom ou prénom..."
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -128,15 +153,14 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
               <th className="text-center" scope="col" style={{ width: "20%" }}>
                 ROLE
               </th>
-
               <th className="text-end" scope="col" style={{ width: "30%" }}>
                 Action
               </th>
             </tr>
           </thead>
           <tbody>
-            {users.length > 0 &&
-              users.map((user, index) => (
+            {filteredUsers.length > 0 &&
+              filteredUsers.map((user, index) => (
                 <tr className="align-middle" key={user.id}>
                   <th className="text-center">{user.id}</th>
                   <td className="text-center">{user.nom}</td>
@@ -144,7 +168,6 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
                   <td className="text-center">
                     {roles[user.role] || "Rôle inconnu"}
                   </td>
-
                   <td className="text-end">
                     <div className="gooey-menu d-flex justify-content-end">
                       <input
@@ -175,11 +198,18 @@ const User = ({ handleshowmodale, showModalUpdate })=> {
                   </td>
                 </tr>
               ))}
+            {filteredUsers.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center">
+                  Aucun utilisateur disponible
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
     </>
   );
-}
+};
 
 export default memo(User);

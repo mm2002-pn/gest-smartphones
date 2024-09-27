@@ -1,10 +1,11 @@
-import React, { memo, useEffect } from "react";
-import { getRoles } from "../services/roleService";
-import { deleteRole } from "../services/roleService";
+import React, { memo, useEffect, useState } from "react";
+import { getRoles, deleteRole } from "../services/roleService";
 import { toast } from "react-toastify";
 
-const  Listrole =({ handleshowmodale, showModalUpdate }) => {
-  const [roles, setRoles] = React.useState([]);
+const ListRole = ({ handleshowmodale, showModalUpdate }) => {
+  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -17,14 +18,17 @@ const  Listrole =({ handleshowmodale, showModalUpdate }) => {
           console.log("No data available in response");
         }
       } catch (error) {
-        console.log("Error fetching roles:", error);
+        console.error("Error fetching roles:", error);
+        toast.error("Erreur lors de la récupération des rôles");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchRoles();
   }, []);
 
-  const showToast = (title, message, theme = "light", icon = "info") => {
+  const showToast = (title, message, theme = "light") => {
     toast[theme](`${title}: ${message}`, {
       position: "top-right",
       autoClose: 5000,
@@ -47,21 +51,33 @@ const  Listrole =({ handleshowmodale, showModalUpdate }) => {
         setRoles(filteredRoles);
         showToast("Succès", "Role supprimé avec succès", "success");
       } else {
-        showToast("Erreur", "Erreur lors de la suppression du role", "error");
+        showToast("Erreur", "Erreur lors de la suppression du rôle", "error");
       }
     } catch (error) {
-      showToast("Erreur", "Erreur lors de la suppression du role", "error");
+      console.error("Error deleting role:", error);
+      showToast("Erreur", "Erreur lors de la suppression du rôle", "error");
     }
   };
 
+  // Fonction pour filtrer les rôles
+  const filteredRoles = roles.filter(
+    (role) =>
+      role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      role.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return <div className="text-center">Chargement...</div>; // Loading state
+  }
+
   return (
     <>
-      <div className="card  mb-5 border-0 bg-white shadow-none">
+      <div className="card mb-5 border-0 bg-white shadow-none">
         <div className="card-header bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <h5 className="mb-0 text-dark fw-bold">Roles</h5>
             <span className="badge bg-blue ms-3 fs-6">
-              {roles.length > 0 && roles.length}
+              {filteredRoles.length > 0 && filteredRoles.length}
             </span>
           </div>
           <div className="card-action">
@@ -72,7 +88,7 @@ const  Listrole =({ handleshowmodale, showModalUpdate }) => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                 Ajouter
+                Ajouter
               </a>
               <ul className="dropdown-menu dropdown-menu-end shadow-sm">
                 <li>
@@ -88,7 +104,18 @@ const  Listrole =({ handleshowmodale, showModalUpdate }) => {
             </div>
           </div>
         </div>
-        
+        <div className="card-body">
+          {/* Champ de recherche */}
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Rechercher par nom ou description"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -110,49 +137,54 @@ const  Listrole =({ handleshowmodale, showModalUpdate }) => {
             </tr>
           </thead>
           <tbody>
-            {roles.length > 0
-              ? roles.map((role, index) => (
-                  <tr className="align-middle" key={role.id}>
-                    <th className="text-center">{role.id}</th>
-                    <td className="text-center">{role.name}</td>
-                    <td className="text-center">{role.description}</td>
-                    <td className="text-end">
-                      <div className="gooey-menu d-flex justify-content-end">
-                        <input
-                          type="checkbox"
-                          className="open-menus"
-                          name="open-menus"
-                          style={{ display: "none" }}
-                          id={`chc-${role.id}`}
-                        />
-                        <label htmlFor={`chc-${role.id}`}>
-                          <div className="button btn-sm btn-light border">
-                            <i className="fa fa-ellipsis-v"></i>
-                          </div>
-                        </label>
-                        <div
-                          className="button press btn-sm btn-warning mx-1"
-                          onClick={() => showModalUpdate("role", role.id)}
-                        >
-                          <i className="fa fa-edit"></i>
+            {filteredRoles.length > 0 ? (
+              filteredRoles.map((role) => (
+                <tr className="align-middle" key={role.id}>
+                  <th className="text-center">{role.id}</th>
+                  <td className="text-center">{role.name}</td>
+                  <td className="text-center">{role.description}</td>
+                  <td className="text-end">
+                    <div className="gooey-menu d-flex justify-content-end">
+                      <input
+                        type="checkbox"
+                        className="open-menus"
+                        name="open-menus"
+                        style={{ display: "none" }}
+                        id={`chc-${role.id}`}
+                      />
+                      <label htmlFor={`chc-${role.id}`}>
+                        <div className="button btn-sm btn-light border">
+                          <i className="fa fa-ellipsis-v"></i>
                         </div>
-                        <div
-                          className="button press btn-sm btn-danger mx-1"
-                          onClick={() => handleDelete(role.id)}
-                        >
-                          <i className="fa fa-trash"></i>
-                        </div>
+                      </label>
+                      <div
+                        className="button press btn-sm btn-warning mx-1"
+                        onClick={() => showModalUpdate("role", role.id)}
+                      >
+                        <i className="fa fa-edit"></i>
                       </div>
-                    </td>
-                  </tr>
-                ))
-              : "No data available"}
+                      <div
+                        className="button press btn-sm btn-danger mx-1"
+                        onClick={() => handleDelete(role.id)}
+                      >
+                        <i className="fa fa-trash"></i>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center">
+                  Aucune donnée disponible
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
     </>
   );
-}
+};
 
-
-export default memo(Listrole);
+export default memo(ListRole);

@@ -1,21 +1,20 @@
 import React, { memo, useEffect, useState } from "react";
-import { getArticles } from "../services/articleService";
-import { deleteArticle } from "../services/articleService";
+import { getArticles, deleteArticle } from "../services/articleService";
 import BlockUi from "react-block-ui";
-
-// Import these items
 import { toast } from "react-toastify";
 
 const Article = ({ handleshowmodale, showModalUpdate }) => {
   const [articles, setArticles] = useState([]);
+  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         const response = await getArticles();
         if (response && response.data) {
-          console.log(response.data);
           setArticles(response.data);
+          setFilteredArticles(response.data);
         } else {
           showToast(
             "Erreur",
@@ -34,8 +33,7 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
     fetchArticles();
   }, []);
 
-  // suppresion
-  const showToast = (title, message, theme = "light", icon = "info") => {
+  const showToast = (title, message, theme = "light") => {
     toast[theme](`${title}: ${message}`, {
       position: "top-right",
       autoClose: 5000,
@@ -49,26 +47,35 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
   };
 
   const handleDelete = async (id) => {
-    console.log("Deleting article with id:", id);
     try {
       const response = await deleteArticle(id);
       if (response && response.data) {
-        console.log(response.data);
         const filteredArticles = articles.filter((arti) => arti.id !== id);
         setArticles(filteredArticles);
+        setFilteredArticles(filteredArticles); // Update filtered articles
         showToast("Succès", "Article supprimé avec succès", "success");
       } else {
         showToast("Erreur", "Erreur lors de la suppression", "error");
       }
     } catch (error) {
-      console.log("Error deleting article:", error);
       showToast("Erreur", "Erreur lors de la suppression", "error");
     }
   };
 
+  const handleFilterChange = (e) => {
+    const value = e.target.value.toLowerCase();
+    setFilter(value);
+    const filtered = articles.filter(
+      (arti) =>
+        arti.articleName.toLowerCase().includes(value) ||
+        arti.articlePrice.toString().includes(value)
+    );
+    setFilteredArticles(filtered);
+  };
+
   return (
     <>
-      <div className="card  mb-5 border-0 bg-white shadow-none">
+      <div className="card mb-5 border-0 bg-white shadow-none">
         <div className="card-header bg-light d-flex justify-content-between align-items-center">
           <div className="d-flex align-items-center">
             <h5 className="mb-0 text-dark fw-bold">Articles</h5>
@@ -100,6 +107,17 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
             </div>
           </div>
         </div>
+
+        {/* Filter Input */}
+        <div className="p-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Rechercher par nom ou prix..."
+            value={filter}
+            onChange={handleFilterChange}
+          />
+        </div>
       </div>
 
       <div className="table-responsive">
@@ -124,8 +142,8 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
             </tr>
           </thead>
           <tbody>
-            {articles.length > 0 ? (
-              articles.map((arti, index) => (
+            {filteredArticles.length > 0 ? (
+              filteredArticles.map((arti, index) => (
                 <tr key={arti.id} className="align-middle">
                   <th className="text-center">{index + 1}</th>
                   <td className="text-center">
@@ -182,6 +200,5 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
     </>
   );
 };
-
 
 export default memo(Article);
