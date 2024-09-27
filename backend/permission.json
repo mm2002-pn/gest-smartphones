@@ -1,0 +1,45 @@
+{
+    "permissions": [
+      {
+        "id": 1,
+        "name": "create_user"
+      },
+      {
+        "id": 2,
+        "name": "edit_user"
+      },
+      {
+        "id": 3,
+        "name": "delete_user"
+      },
+      {
+        "id": 4,
+        "name": "view_users"
+      },
+      {
+        "id": 5,
+        "name": "create_role"
+      },
+      {
+        "id": 6,
+        "name": "edit_role"
+      },
+      {
+        "id": 7,
+        "name": "delete_role"
+      },
+      {
+        "id": 8,
+        "name": "view_roles"
+      },
+      {
+        "id": 9,
+        "name": "manage_permissions"
+      }
+    ],
+
+    "roles":[
+      
+    ]
+  }
+  

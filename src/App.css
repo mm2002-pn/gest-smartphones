@@ -1,38 +1,379 @@
-.App {
+@import url("./assets/css/variable.css");
+@import url("https://fonts.cdnfonts.com/css/avenir");
+body {
+  font-family: "Avenir" !important;
+}
+
+/* CUSTOM BOOSTRAP CSS */
+.h-100vh {
+  height: 100vh;
+}
+
+a {
+  color: var(--color-gris) !important;
+  text-decoration: none !important;
+}
+.top-bar-app{
+  border-bottom: 2px solid var(--color-bleu) !important;
+}
+.btn-custum {
+  background-color: var(--color-bleu) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 5px !important;
+  transition: background-color 0.3s ease-in-out;
+}
+.bg-blue {
+  background-color: var(--color-bleu) !important;
+}
+/* les effet */
+.btn-custum:hover {
+  background-color: var(--color-bleuf) !important;
+}
+.btn-custum:focus {
+  background-color: var(--color-bleuf) !important;
+}
+
+/* CUSTOM BOOSTRAP CSS */
+
+/* SIDEBAR */
+#sidebar-wrapper {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: #ffffff; /* Dark background */
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+  font-family: "Avenir" !important;
+}
+
+/* Logo styling */
+#sidebar-wrapper img {
+  margin: 20px auto;
+  display: block;
+  max-width: 250px !important;
+}
+
+/* Sidebar menu */
+#sidebar-wrapper ul {
+  padding: 0;
+  list-style: none;
+}
+
+/* Menu links */
+#sidebar-wrapper ul li a {
+  display: block;
+  padding: 10px 20px;
+  color: var(--color-bleuf); /* Light gray text */
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 300;
+  transition: all 0.3s ease-in-out;
+  border-radius: 4px;
+  position: relative;
+}
+
+/* Active link */
+#sidebar-wrapper ul li a.active {
+  background-color: var(--color-bleu); /* Primary blue */
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Hover effect */
+#sidebar-wrapper ul li a:hover {
+  background-color: var(--color); /* Darker gray on hover */
+  color: var(--color-gris);
+  transform: translateX(5px); /* Slight move to the right on hover */
+}
+
+/* Icons within links */
+#sidebar-wrapper ul li a i {
+  margin-right: 10px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Rotate icon on hover */
+#sidebar-wrapper ul li a:hover i {
+  transform: rotate(20deg);
+}
+
+/* Button de déconnexion */
+#sidebar-wrapper .btn {
+  margin: 20px;
+  padding: 10px 20px;
+  background-color: var(--color-bleuf);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Button hover effect */
+#sidebar-wrapper .btn:hover {
+  background-color: var(--color-bleu);
+}
+
+/* SIDEBAR FIN */
+
+/* Make the sidebar responsive */
+@media (max-width: 768px) {
+  #sidebar-wrapper {
+    width: 200px;
+  }
+
+  #sidebar-wrapper ul li a {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  #sidebar-wrapper img {
+    max-width: 80px;
+  }
+}
+
+/* SIDEBAR */
+
+/* Style du tableau */
+.table {
+  border-collapse: separate;
+  border-spacing: 0 15px; /* Espacement entre les lignes */
+}
+
+.table thead {
+  background-color: var(--color-bleu);
+  color: #fff; /* Couleur du texte dans l'en-tête */
+  text-transform: uppercase; /* Texte en majuscules */
+  letter-spacing: 1px; /* Espacement entre les lettres */
+}
+
+.table thead th {
+  padding: 12px 15px;
+  border: none;
+  font-size: 14px;
+}
+
+.table tbody tr {
+  background-color: var(--color-bleu); /* Couleur de fond des lignes */
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Ombre pour un effet surélevé */
+  transition: transform 0.3s ease;
+}
+
+.table tbody tr:hover {
+  transform: translateY(-5px); /* Légère élévation au survol */
+}
+
+.table tbody th,
+.table tbody td {
+  padding: 15px;
   text-align: center;
+  vertical-align: middle;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.table tbody td:last-child {
+  text-align: right;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* ICONS BUTTON POUR LES ACTIONS */
+.gooey-menu {
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  flex-direction: row-reverse; /* Inverse l'ordre des boutons */
+  margin-left: 49%;
+}
+
+.gooey-menu .button {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: var(--color-bleuf);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  margin-left: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.gooey-menu .button:hover {
+  border-color: var(--color-bleu);
+  background-color: var(--color-bleu);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.gooey-menu .button i {
+  color: #fff;
+  font-size: 18px;
 }
+
+.gooey-menu .button:not(:first-child) {
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.4s ease;
+}
+
+.gooey-menu .open-menus:checked ~ .button:not(:first-child) {
+  opacity: 1;
+  transform: scale(1);
+  transition: all 0.4s ease;
+  margin-left: 10px;
+}
+
+/* CARD */
+
+.card {
+  background-color: var(--color-bleu) !important;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+  border: 1px solid var(--color) !important;
+}
+
+.card h5 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.card span {
+  color: #fff;
+  font-weight: 300;
+  font-size: 14px;
+  background-color: var(--color-bleuf);
+}
+
+/* LOGIN */
+
+/* Conteneur général */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+/* Carte de connexion */
+.login-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 350px;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.brand_logo {
+  width: 80px;
+  height: 80px;
+}
+
+/* Groupe d'entrée */
+.input-group {
+  position: relative;
+}
+
+.input-group-text {
+  background-color: #ececec;
+  border-radius: 0.25rem 0 0 0.25rem;
+  padding: 10px;
+}
+
+.form-control {
+  border-radius: 0 0.25rem 0.25rem 0;
+  border: 1px solid #ccc;
+}
+
+/* Bouton de visibilité du mot de passe */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Bouton de connexion */
+.login-btn {
+  width: 100%;
+  background-color: var(--color-bleuf) !important;
+  color: white !important;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: var(--color-bleu) !important;
+}
+
+/* Lien mot de passe oublié */
+.forgot-password {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-password a {
+  color: #333;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* MODAL CUSTOM */
+
+.modal-content {
+  border-radius: 10px !important;
+}
+
+.modal-header {
+  border-bottom: none !important;
+  background-color: var(--color-bleu) !important;
+  color: #fff !important;
+  border-radius: 40px !important;
+
+}
+
+.modal-body {
+  padding: 20px !important;
+  background-color: var(--color) !important;
+  border: 1px solid var(--color) !important;
+  border-radius: 40px !important;
+
+}
+
+.modal-dialog {
+  background-color: var(--color-bleu) !important;
+  border-radius: 40px !important;
+
+}
+
+.modal-content {
+  border: none !important;
+  background-color: var(--color-bleu) !important;
+  border-radius: 40px !important;
+}
+
+.modal-footer button {
+  background-color: var(--color-bleuf) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 5px !important;
+}
+
+.modal-footer button:hover {
+  background-color: var(--color-bleu) !important;
+}
+
