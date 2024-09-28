@@ -2,7 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { getRoles, deleteRole } from "../services/roleService";
 import { toast } from "react-toastify";
 
-const ListRole = ({ handleshowmodale, showModalUpdate }) => {
+const ListRole = ({ handleshowmodale, showModalUpdate,showModalDetail }) => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -168,6 +168,13 @@ const ListRole = ({ handleshowmodale, showModalUpdate }) => {
                         onClick={() => handleDelete(role.id)}
                       >
                         <i className="fa fa-trash"></i>
+                      </div>
+                       {/* detail */}
+
+                       <div className="button press btn-sm btn-info mx-1"
+                        onClick={() => showModalDetail("role", role.id)}
+                       >
+                        <i className="fa fa-eye"></i>
                       </div>
                     </div>
                   </td>

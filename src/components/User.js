@@ -3,7 +3,12 @@ import { deleteUser, getUsers } from "../services/userService";
 import { getRoles } from "../services/roleService";
 import { toast } from "react-toastify";
 
-const User = ({ handleshowmodale, showModalUpdate }) => {
+const User = ({
+  handleshowmodale,
+  showModalUpdate,
+  showModalDetail,
+  authuser,
+}) => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [roles, setRoles] = useState({});
@@ -48,7 +53,7 @@ const User = ({ handleshowmodale, showModalUpdate }) => {
 
   useEffect(() => {
     // Filter users based on the filter state
-    const filtered = users.filter(user =>
+    const filtered = users.filter((user) =>
       `${user.nom} ${user.prenom}`.toLowerCase().includes(filter.toLowerCase())
     );
     setFilteredUsers(filtered);
@@ -122,7 +127,7 @@ const User = ({ handleshowmodale, showModalUpdate }) => {
             </div>
           </div>
         </div>
-        
+
         {/* Filter Input */}
         <div className="card-body">
           <div className="mb-3">
@@ -182,17 +187,32 @@ const User = ({ handleshowmodale, showModalUpdate }) => {
                           <i className="fa fa-ellipsis-v"></i>
                         </div>
                       </label>
+
+                      {authuser.role === "1" && (
+                        <div
+                          className="button press btn-sm btn-warning mx-1"
+                          onClick={() => showModalUpdate("user", user.id)}
+                        >
+                          <i className="fa fa-edit"></i>
+                        </div>
+                      )}
+
+                      {authuser.role === "1" && (
+                        <div
+                          className="button press btn-sm btn-danger mx-1"
+                          onClick={() => handleDelete(user.id)}
+                        >
+                          <i className="fa fa-trash"></i>
+                        </div>
+                      )}
+
+                      {/* detail */}
+
                       <div
-                        className="button press btn-sm btn-warning mx-1"
-                        onClick={() => showModalUpdate("user", user.id)}
+                        className="button press btn-sm btn-info mx-1"
+                        onClick={() => showModalDetail("user", user.id)}
                       >
-                        <i className="fa fa-edit"></i>
-                      </div>
-                      <div
-                        className="button press btn-sm btn-danger mx-1"
-                        onClick={() => handleDelete(user.id)}
-                      >
-                        <i className="fa fa-trash"></i>
+                        <i className="fa fa-eye"></i>
                       </div>
                     </div>
                   </td>

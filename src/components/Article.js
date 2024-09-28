@@ -3,7 +3,12 @@ import { getArticles, deleteArticle } from "../services/articleService";
 import BlockUi from "react-block-ui";
 import { toast } from "react-toastify";
 
-const Article = ({ handleshowmodale, showModalUpdate }) => {
+const Article = ({
+  handleshowmodale,
+  showModalUpdate,
+  showModalDetail,
+  authUser,
+}) => {
   const [articles, setArticles] = useState([]);
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [filter, setFilter] = useState("");
@@ -171,17 +176,32 @@ const Article = ({ handleshowmodale, showModalUpdate }) => {
                           <i className="fa fa-ellipsis-v"></i>
                         </div>
                       </label>
+
+                      {authUser.role === "1" && (
+                        <div
+                          className="button press btn-sm btn-warning mx-1"
+                          onClick={() => showModalUpdate("article", arti.id)}
+                        >
+                          <i className="fa fa-edit"></i>
+                        </div>
+                      )}
+
+                      {authUser.role === "1" && (
+                        <div
+                          className="button press btn-sm btn-danger mx-1"
+                          onClick={() => handleDelete(arti.id)}
+                        >
+                          <i className="fa fa-trash"></i>
+                        </div>
+                      )}
+
+                      {/* detail */}
+
                       <div
-                        className="button press btn-sm btn-warning mx-1"
-                        onClick={() => showModalUpdate("article", arti.id)}
+                        className="button press btn-sm btn-info mx-1"
+                        onClick={() => showModalDetail("article", arti.id)}
                       >
-                        <i className="fa fa-edit"></i>
-                      </div>
-                      <div
-                        className="button press btn-sm btn-danger mx-1"
-                        onClick={() => handleDelete(arti.id)}
-                      >
-                        <i className="fa fa-trash"></i>
+                        <i className="fa fa-eye"></i>
                       </div>
                     </div>
                   </td>

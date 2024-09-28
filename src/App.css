@@ -4,6 +4,23 @@ body {
   font-family: "Avenir" !important;
 }
 
+/* General */
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(128, 128, 128, 0.041);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 50px;
+}
 /* CUSTOM BOOSTRAP CSS */
 .h-100vh {
   height: 100vh;
@@ -15,6 +32,7 @@ a {
 }
 .top-bar-app{
   border-bottom: 2px solid var(--color-bleu) !important;
+  background-color: var(--color) !important;
 }
 .btn-custum {
   background-color: var(--color-bleu) !important;
@@ -35,6 +53,31 @@ a {
 }
 
 /* CUSTOM BOOSTRAP CSS */
+.sidebar-open {
+  display: block !important; /* Masquer le texte dans le Sidebar réduit */
+  width: 260px  !important; /* Largeur normale du Sidebar */
+  transition: width 0.3s;
+}
+
+.sidebar-closed {
+  width: 0px !important; /* Largeur réduite du Sidebar */
+  display: none !important; /* Masquer le texte dans le Sidebar réduit */
+  transition: width 0.3s;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-closed .nav-link span {
+  display: none; /* Masquer le texte dans le Sidebar réduit */
+}
+
+.sidebar-open .nav-link span {
+  display: inline; /* Afficher le texte dans le Sidebar ouvert */
+}
+
 
 /* SIDEBAR */
 #sidebar-wrapper {
@@ -44,7 +87,7 @@ a {
   top: 0;
   left: 0;
   z-index: 1000;
-  background-color: #ffffff; /* Dark background */
+  background-color: #ffffff; 
   color: #fff;
   transition: all 0.3s ease-in-out;
   font-family: "Avenir" !important;
@@ -141,6 +184,7 @@ a {
 .table {
   border-collapse: separate;
   border-spacing: 0 15px; /* Espacement entre les lignes */
+  width: 100%;
 }
 
 .table thead {
@@ -160,6 +204,9 @@ a {
   background-color: var(--color-bleu); /* Couleur de fond des lignes */
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Ombre pour un effet surélevé */
   transition: transform 0.3s ease;
+  position: relative;
+  width: 100%;
+
 }
 
 .table tbody tr:hover {
@@ -183,7 +230,7 @@ a {
   align-items: center;
   justify-content: flex-start;
   flex-direction: row-reverse; /* Inverse l'ordre des boutons */
-  margin-left: 49%;
+  margin-left: 35%;
 }
 
 .gooey-menu .button {
